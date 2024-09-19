@@ -21,7 +21,7 @@ class MainPage(tk.Frame):
 class SidePage(tk.Frame):
     def __init__(self, parent, controller):
         
-
+dsdf
         
 
 if __name__ == "__main__":
