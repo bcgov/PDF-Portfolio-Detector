@@ -1,18 +1,29 @@
 from tkinter import *
+import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
-import tkinter
+from tkinter import filedialog
+from functools import partial
 
-root = Tk()
-root.geometry("900x600") #default size when opened
-root.configure(background='cyan') #background color
-root.attributes('-alpha',0.5) #transparent window
-
-def popup_msg():
-    msg = messagebox.showinfo("Result", "Process Finished")
+class windows(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        
+        self.wm_title("PDF Portfolio Detector") # adding a title to the window
+        self.geometry("900x600") # default size when opened
 
 
-button = Button(root, text = 'Click me !', command = popup_msg)
-# button.pack(side = 'middle') #makes button position be at the top
-button.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-root.mainloop()
+class MainPage(tk.Frame):
+    def __init__(self, parent, controller):
+        
+
+
+class SidePage(tk.Frame):
+    def __init__(self, parent, controller):
+        
+
+        
+
+if __name__ == "__main__":
+    detector = windows()
+    detector.mainloop()
