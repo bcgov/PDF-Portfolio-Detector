@@ -13,15 +13,15 @@ class windows(tk.Tk):
 
 
 
-class MainPage(tk.Frame):
-    def __init__(self, parent, controller):
+# class MainPage(tk.Frame):
+#     def __init__(self, parent, controller):
         
 
 
-class SidePage(tk.Frame):
-    def __init__(self, parent, controller):
+# class SidePage(tk.Frame):
+#     def __init__(self, parent, controller):
         
-dsdf
+
         
 
 if __name__ == "__main__":
