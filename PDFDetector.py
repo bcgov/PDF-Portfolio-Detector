@@ -13,7 +13,7 @@ class windows(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs) # for the class Tk
 
         self.wm_title("PDF Portfolio Detector") # adding a title to the window
-        self.geometry("900x600") # default size when opened
+        self.geometry("700x500") # default size when opened
 
         self.frames = {} # initialization of the frames array (where the different containers are going to be stored)
 
@@ -31,6 +31,7 @@ class windows(tk.Tk):
 
             frame.grid(row=0, column=0, sticky = 'nsew')
 
+
         self.show_frame(MainPage) # staring page is MainPage class
 
     def show_frame(self, content): # function to choose which frame to put to the front (what the viewer sees)
@@ -40,18 +41,56 @@ class windows(tk.Tk):
 
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
-        self.var=1
+        tk.Frame.__init__(self, parent)
+        
+        def selectPath1():   
+            path_ = filedialog.askdirectory()
+            path1.set(path_)
+
+        def selectPath2():   
+            path_ = filedialog.askdirectory()
+            path2.set(path_)
+
+        # def create_file():  
+        #     print("folder_name: ", folder.get())
+        #     print("path_name: ", path.get())
+        #     dirs = os.path.join(path.get(), folder.get())
+        #     if not os.path.exists(dirs):
+        #         os.makedirs(dirs)
+        #         messagebox.showinfo('Tips:','Folder name created successfully!')
+        #     else:
+        #         messagebox.showerror('Tips','The folder name exists, please change it')
+
+
+
+        path1 = tk.StringVar()   # Receiving user's file_path selection
+        folder1 = tk.StringVar() # Receiving user's folder_name selection
+
+        path2 = tk.StringVar()   # Receiving user's file_path selection
+        folder2 = tk.StringVar() # Receiving user's folder_name selection
+
+        ttk.Label(text = "Folder to scan: ").place(x=50, y= 200)
+        ttk.Entry(textvariable = path1, width=50).place(x=160, y= 200)
+        ttk.Button(text = "Browse Source: ", command = selectPath1).place(x=470, y= 198)
+
+
+        ttk.Label(text = "Place to put results: ").place(x=50, y= 300)
+        ttk.Entry(textvariable = path2, width=50).place(x=160, y= 300)
+        ttk.Button(text = "Browse Destination: ", command = selectPath2).place(x=470, y= 298)
 
 
 
 
 class SidePage(tk.Frame):
     def __init__(self, parent, controller):
-        self.var = 1
+        tk.Frame.__init__(self, parent)
+        
+        self.var =1 
         
 
         
 
 if __name__ == "__main__":
     detector = windows()
+    detector.resizable(False, False)
     detector.mainloop()
