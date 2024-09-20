@@ -60,14 +60,14 @@ class MainPage(tk.Frame):
 
         # blank = tk.PhotoImage()
 
-        ttk.Label(text = "Folder to scan: ", width=50, background='lightblue').place(x=40, y= 200)
-        ttk.Entry(textvariable = path1, width=50).place(x=150, y= 200)
-        ttk.Button(text = "Browse Source ", command = selectPath1, width=20).place(x=460, y= 198)
+        ttk.Label(self, text = "Folder to scan: ", width=50, background='lightblue').place(x=40, y= 200)
+        ttk.Entry(self, textvariable = path1, width=50).place(x=150, y= 200)
+        ttk.Button(self, text = "Browse Source ", command = selectPath1, width=20).place(x=460, y= 198)
 
 
-        ttk.Label(text = "Place to put results: ", background='lightblue').place(x=40, y= 300)
-        ttk.Entry(textvariable = path2, width=50).place(x=150, y= 300)
-        ttk.Button(text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298)
+        ttk.Label(self, text = "Place to put results: ", background='lightblue').place(x=40, y= 300)
+        ttk.Entry(self, textvariable = path2, width=50).place(x=150, y= 300)
+        ttk.Button(self, text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298)
 
 
 
