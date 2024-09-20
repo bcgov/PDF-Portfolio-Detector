@@ -31,7 +31,7 @@ class windows(tk.Tk):
 
             frame.grid(row=0, column=0, sticky = 'nsew')
 
-        self.show_frame(MainPage) # staring page is MainPage class
+        self.show_frame(SidePage) # staring page is MainPage class
 
     def show_frame(self, content): # function to choose which frame to put to the front (what the viewer sees)
         frame = self.frames[content]
@@ -40,18 +40,30 @@ class windows(tk.Tk):
 
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
-        self.var=1
+        tk.Frame.__init__(self, parent)
+        ttk.Label(self, text = "Source:", font = 'bold', background = self.cget('background'), foreground ='black').place(x = 300, y = 300)
 
 
 
 
 class SidePage(tk.Frame):
     def __init__(self, parent, controller):
-        self.var = 1
-        
+        tk.Frame.__init__(self, parent, background = 'cyan')
+
+        ttk.Button(self, text = "Edit", command = lambda: controller.show_frame(MainPage)).place(x = 700, y = 550)
+        ttk.Button(self, text = "Close", command = controller.destroy).place(x = 800, y = 550)
+
+        ttk.Label(self, text = "Source:", font = 'bold', background = self.cget('background'), foreground ='black').place(x = 200, y = 100)
+        text_box_width = 500
+        frame_width = 900  # Width of the main window
+        x_position = (frame_width - text_box_width) // 2
+
+        tk.Text(self, height=25, width=75).place(x=x_position, y=130)  # Centered and adjusted y-position
+                
 
         
 
 if __name__ == "__main__":
     detector = windows()
+    detector.resizable(False, False)
     detector.mainloop()
