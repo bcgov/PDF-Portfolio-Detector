@@ -33,7 +33,7 @@ class windows(tk.Tk):
             frame.grid(row=0, column=0, sticky = 'nsew')
 
 
-        self.show_frame(SidePage) # staring page is MainPage class
+        self.show_frame(MainPage) # staring page is MainPage class
 
     def show_frame(self, content): # function to choose which frame to put to the front (what the viewer sees)
         frame = self.frames[content]
@@ -43,7 +43,7 @@ class windows(tk.Tk):
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background='lightblue')
-        self.var = 1
+
         def selectPath1():   
             path_ = filedialog.askdirectory()
             path1.set(path_)
@@ -58,18 +58,19 @@ class MainPage(tk.Frame):
         path2 = tk.StringVar()   # Receiving user's file_path selection
         folder2 = tk.StringVar() # Receiving user's folder_name selection
 
-        ttk.Label(self, text = "PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y= 60) #Header
+        ttk.Label(self, text = "PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y= 60) # page header
 
-        # blank = tk.PhotoImage()
-
+        # source to scan
         ttk.Label(self, text = "Folder to scan: ", width=50, background='lightblue').place(x=40, y= 200)
         ttk.Entry(self, textvariable = path1, width=50).place(x=150, y= 200)
         ttk.Button(self, text = "Browse Source ", command = selectPath1, width=20).place(x=460, y= 198)
 
-
+        # destination to place
         ttk.Label(self, text = "Place to put results: ", background='lightblue').place(x=40, y= 300)
         ttk.Entry(self, textvariable = path2, width=50).place(x=150, y= 300)
-        ttk.Button(self, text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298)
+        ttk.Button(self, text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298) 
+
+        ttk.Button(self, text = "Start", command = lambda: controller.show_frame(SidePage), width=10).place(x=560, y= 360) # button for going to next page
 
 
 
@@ -78,8 +79,8 @@ class SidePage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background = 'lightblue')
 
-        ttk.Button(self, text = "Edit", command = lambda: controller.show_frame(MainPage)).place(x = 480, y = 360)
-        ttk.Button(self, text = "Close", command = controller.destroy).place(x = 570, y = 360)
+        ttk.Button(self, text = "Back", command = lambda: controller.show_frame(MainPage)).place(x=460, y= 360)
+        ttk.Button(self, text = "Close", command = controller.destroy).place(x=560, y= 360)
 
         ttk.Label(self, text = "Source:", font = 'bold', background = self.cget('background'), foreground ='black').place(x = 100, y = 100)
         tk.Text(self, height = 10, width = 60).place(x = 100, y = 130)  #centered and adjusted text box
