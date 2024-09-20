@@ -33,7 +33,7 @@ class windows(tk.Tk):
             frame.grid(row=0, column=0, sticky = 'nsew')
 
 
-        self.show_frame(MainPage) # staring page is MainPage class
+        self.show_frame(SidePage) # staring page is MainPage class
 
     def show_frame(self, content): # function to choose which frame to put to the front (what the viewer sees)
         frame = self.frames[content]
@@ -43,7 +43,7 @@ class windows(tk.Tk):
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background='lightblue')
-        
+        self.var = 1
         def selectPath1():   
             path_ = filedialog.askdirectory()
             path1.set(path_)
@@ -60,31 +60,27 @@ class MainPage(tk.Frame):
 
         # blank = tk.PhotoImage()
 
-        ttk.Label(text = "Folder to scan: ", width=50, background='lightblue').place(x=40, y= 200)
-        ttk.Entry(textvariable = path1, width=50).place(x=150, y= 200)
-        ttk.Button(text = "Browse Source ", command = selectPath1, width=20).place(x=460, y= 198)
+        ttk.Label(self, text = "Folder to scan: ", width=50, background='lightblue').place(x=40, y= 200)
+        ttk.Entry(self, textvariable = path1, width=50).place(x=150, y= 200)
+        ttk.Button(self, text = "Browse Source ", command = selectPath1, width=20).place(x=460, y= 198)
 
 
-        ttk.Label(text = "Place to put results: ", background='lightblue').place(x=40, y= 300)
-        ttk.Entry(textvariable = path2, width=50).place(x=150, y= 300)
-        ttk.Button(text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298)
+        ttk.Label(self, text = "Place to put results: ", background='lightblue').place(x=40, y= 300)
+        ttk.Entry(self, textvariable = path2, width=50).place(x=150, y= 300)
+        ttk.Button(self, text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298)
 
 
 
 
 class SidePage(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, background = 'cyan')
+        tk.Frame.__init__(self, parent, background = 'lightblue')
 
-        ttk.Button(self, text = "Edit", command = lambda: controller.show_frame(MainPage)).place(x = 700, y = 550)
-        ttk.Button(self, text = "Close", command = controller.destroy).place(x = 800, y = 550)
+        ttk.Button(self, text = "Edit", command = lambda: controller.show_frame(MainPage)).place(x = 480, y = 360)
+        ttk.Button(self, text = "Close", command = controller.destroy).place(x = 570, y = 360)
 
-        ttk.Label(self, text = "Source:", font = 'bold', background = self.cget('background'), foreground ='black').place(x = 200, y = 100)
-        text_box_width = 500
-        frame_width = 900  # Width of the main window
-        x_position = (frame_width - text_box_width) // 2
-
-        tk.Text(self, height=25, width=75).place(x=x_position, y=130)  # Centered and adjusted y-position
+        ttk.Label(self, text = "Source:", font = 'bold', background = self.cget('background'), foreground ='black').place(x = 100, y = 100)
+        tk.Text(self, height = 10, width = 60).place(x = 100, y = 130)  #centered and adjusted text box
                 
 
         
