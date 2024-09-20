@@ -6,6 +6,11 @@ from tkinter import filedialog
 from functools import partial
 import os
 import sys
+from spire.pdf.common import * # type: ignore
+from spire.pdf import * # type: ignore
+from datetime import datetime
+import csv
+import re
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -44,33 +49,91 @@ class MainPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background='lightblue')
 
-        def selectPath1():   
-            path_ = filedialog.askdirectory()
-            path1.set(path_)
+        def selectPath1():   # source
+            self.path_1 = filedialog.askdirectory()
+            path1.set(self.path_1)
 
-        def selectPath2():   
-            path_ = filedialog.askdirectory()
-            path2.set(path_)
+        def selectPath2():   # destination
+            self.path_2 = filedialog.askdirectory()
+            path2.set(self.path_2)
+
+        def fileProcessor(input_files, output_path):
+            # Convert input files and output path to string
+            input_files = str(input_files)
+            output_path = str(output_path)
+
+            # Debugging output
+            print("Input Directory:", input_files)
+            print("Output Directory:", output_path)
+
+            # Create a timestamped directory for output
+            date_title = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
+            user = os.getlogin()
+            title = f"{user} {date_title}"
+            new_dir_path = os.path.join(output_path, title)
+            os.mkdir(new_dir_path)
+
+            # CSV file paths - update to use new_dir_path
+            full_report_csv = os.path.join(new_dir_path, f'Report - {title}.csv')
+            true_report_csv = os.path.join(new_dir_path, f'Only True - {title}.csv')
+            false_report_csv = os.path.join(new_dir_path, f'Only False - {title}.csv')
+
+            # Initialize report lists
+            full_report_rows = []
+            true_report_rows = [['Is Portfolio', '', 'File Name', '', '', '', '', '', '', 'path to portfolio files']]
+            false_report_rows = [['Is Portfolio', '', 'File Name', '', '', '', '', '', '', 'path to portfolio files']]
+
+            for current_path, folders, files in os.walk(input_files):
+                for file in files:
+                    path = os.path.join(current_path, file)
+
+                    if file.lower().endswith(".pdf"):
+                        doc = PdfDocument()
+                        doc.LoadFromFile(path)
+
+                        if doc.IsPortfolio:
+                            true_report_rows.append(['True', '', file, '', '', '', '', '', '', path])
+                        else:
+                            false_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
+                        
+                        doc.Close()
+                    else:
+                        false_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
+
+                    full_report_rows.append(['False', '', file, '', '', '', '', '', '', path])  # Append all file results
+
+            # Write reports
+            with open(full_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
+                csv.writer(csvfile).writerows(full_report_rows)
+
+            with open(true_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
+                csv.writer(csvfile).writerows(true_report_rows)
+
+            with open(false_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
+                csv.writer(csvfile).writerows(false_report_rows)
+
 
         path1 = tk.StringVar()   # Receiving user's file_path selection
-        folder1 = tk.StringVar() # Receiving user's folder_name selection
+        self.path_1 = ''
+        # folder1 = tk.StringVar() # Receiving user's folder_name selection
 
         path2 = tk.StringVar()   # Receiving user's file_path selection
-        folder2 = tk.StringVar() # Receiving user's folder_name selection
+        self.path_2 = ''
+        # folder2 = tk.StringVar() # Receiving user's folder_name selection
 
         ttk.Label(self, text = "PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y= 60) # page header
 
         # source to scan
-        ttk.Label(self, text = "Folder to scan: ", width=50, background='lightblue').place(x=40, y= 200)
+        ttk.Label(self, text = "Folder to scan: *", width=50, background='lightblue').place(x=40, y= 200)
         ttk.Entry(self, textvariable = path1, width=50).place(x=150, y= 200)
         ttk.Button(self, text = "Browse Source ", command = selectPath1, width=20).place(x=460, y= 198)
 
         # destination to place
-        ttk.Label(self, text = "Place to put results: ", background='lightblue').place(x=40, y= 300)
+        ttk.Label(self, text = "Place to put results: *", background='lightblue').place(x=40, y= 300)
         ttk.Entry(self, textvariable = path2, width=50).place(x=150, y= 300)
         ttk.Button(self, text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298) 
 
-        ttk.Button(self, text = "Start", command = lambda: controller.show_frame(SidePage), width=10).place(x=560, y= 360) # button for going to next page
+        ttk.Button(self, text = "Start", command = lambda: [fileProcessor(self.path_1, self.path_2), controller.show_frame(SidePage)], width=10).place(x=560, y= 360) # button for going to next page
 
 
 
