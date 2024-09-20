@@ -49,11 +49,11 @@ class MainPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background='lightblue')
 
-        def selectPath1():   # source
+        def selectPath1():   # source path
             self.path_1 = filedialog.askdirectory()
             path1.set(self.path_1)
 
-        def selectPath2():   # destination
+        def selectPath2():   # destination path
             self.path_2 = filedialog.askdirectory()
             path2.set(self.path_2)
 
@@ -115,13 +115,12 @@ class MainPage(tk.Frame):
 
         path1 = tk.StringVar()   # Receiving user's file_path selection
         self.path_1 = ''
-        # folder1 = tk.StringVar() # Receiving user's folder_name selection
 
         path2 = tk.StringVar()   # Receiving user's file_path selection
         self.path_2 = ''
-        # folder2 = tk.StringVar() # Receiving user's folder_name selection
 
-        ttk.Label(self, text = "PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y= 60) # page header
+        # page header
+        ttk.Label(self, text = "PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y= 60) 
 
         # source to scan
         ttk.Label(self, text = "Folder to scan: *", width=50, background='lightblue').place(x=40, y= 200)
@@ -133,7 +132,9 @@ class MainPage(tk.Frame):
         ttk.Entry(self, textvariable = path2, width=50).place(x=150, y= 300)
         ttk.Button(self, text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298) 
 
-        ttk.Button(self, text = "Start", command = lambda: [fileProcessor(self.path_1, self.path_2), controller.show_frame(SidePage)], width=10).place(x=560, y= 360) # button for going to next page
+        # button for going to next page
+        ttk.Button(self, text = "Start", command = lambda: [fileProcessor(self.path_1, self.path_2), controller.show_frame(SidePage)], width=10).place(x=560, y= 360)
+    
 
 
 
