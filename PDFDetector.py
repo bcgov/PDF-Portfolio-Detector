@@ -12,12 +12,6 @@ class windows(tk.Tk):
         self.geometry("900x600") # default size when opened
 
 
-
-class MainPage(tk.Frame):
-    def __init__(self, parent, controller):
-        
-
-
 class SidePage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
