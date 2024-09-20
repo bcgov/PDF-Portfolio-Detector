@@ -58,6 +58,8 @@ class MainPage(tk.Frame):
         path2 = tk.StringVar()   # Receiving user's file_path selection
         folder2 = tk.StringVar() # Receiving user's folder_name selection
 
+        ttk.Label(self, text = "PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y= 60) #Header
+
         # blank = tk.PhotoImage()
 
         ttk.Label(self, text = "Folder to scan: ", width=50, background='lightblue').place(x=40, y= 200)
