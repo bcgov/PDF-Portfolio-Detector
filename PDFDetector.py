@@ -83,7 +83,7 @@ class SidePage(tk.Frame):
         ttk.Button(self, text = "Close", command = controller.destroy).place(x=560, y= 360)
 
         ttk.Label(self, text = "Source:", font = 'bold', background = self.cget('background'), foreground ='black').place(x = 100, y = 100)
-        tk.Text(self, height = 10, width = 60).place(x = 100, y = 130)  #centered and adjusted text box
+        tk.Text(self, height = 10, width = 60, background = self.cget('background'), borderwidth = 2).place(x = 100, y = 130)  #centered and adjusted text box
                 
 
         
