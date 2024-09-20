@@ -13,7 +13,8 @@ class windows(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs) # for the class Tk
 
         self.wm_title("PDF Portfolio Detector") # adding a title to the window
-        self.geometry("700x500") # default size when opened
+        # self.wm_attributes('-transparentcolor', self['bg'])
+        self.geometry("650x400") # default size when opened
 
         self.frames = {} # initialization of the frames array (where the different containers are going to be stored)
 
@@ -41,7 +42,7 @@ class windows(tk.Tk):
 
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, background='lightblue')
         
         def selectPath1():   
             path_ = filedialog.askdirectory()
@@ -51,32 +52,22 @@ class MainPage(tk.Frame):
             path_ = filedialog.askdirectory()
             path2.set(path_)
 
-        # def create_file():  
-        #     print("folder_name: ", folder.get())
-        #     print("path_name: ", path.get())
-        #     dirs = os.path.join(path.get(), folder.get())
-        #     if not os.path.exists(dirs):
-        #         os.makedirs(dirs)
-        #         messagebox.showinfo('Tips:','Folder name created successfully!')
-        #     else:
-        #         messagebox.showerror('Tips','The folder name exists, please change it')
-
-
-
         path1 = tk.StringVar()   # Receiving user's file_path selection
         folder1 = tk.StringVar() # Receiving user's folder_name selection
 
         path2 = tk.StringVar()   # Receiving user's file_path selection
         folder2 = tk.StringVar() # Receiving user's folder_name selection
 
-        ttk.Label(text = "Folder to scan: ").place(x=50, y= 200)
-        ttk.Entry(textvariable = path1, width=50).place(x=160, y= 200)
-        ttk.Button(text = "Browse Source: ", command = selectPath1).place(x=470, y= 198)
+        # blank = tk.PhotoImage()
+
+        ttk.Label(text = "Folder to scan: ", width=50, background='lightblue').place(x=40, y= 200)
+        ttk.Entry(textvariable = path1, width=50).place(x=150, y= 200)
+        ttk.Button(text = "Browse Source ", command = selectPath1, width=20).place(x=460, y= 198)
 
 
-        ttk.Label(text = "Place to put results: ").place(x=50, y= 300)
-        ttk.Entry(textvariable = path2, width=50).place(x=160, y= 300)
-        ttk.Button(text = "Browse Destination: ", command = selectPath2).place(x=470, y= 298)
+        ttk.Label(text = "Place to put results: ", background='lightblue').place(x=40, y= 300)
+        ttk.Entry(textvariable = path2, width=50).place(x=150, y= 300)
+        ttk.Button(text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298)
 
 
 
