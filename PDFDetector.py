@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 from functools import partial
+<<<<<<< HEAD
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -28,6 +29,54 @@ class SidePage(tk.Frame):
         button2.place(relx=0.95, rely=0.97, anchor ='se', height=20, width=60)
         sourcetext.place(relx=0.2, rely=0.2, height=400, width=500)
 
+=======
+import os
+import sys
+
+class windows(tk.Tk):
+    def __init__(self, *args, **kwargs):
+
+        tk.Tk.__init__(self, *args, **kwargs) # for the class Tk
+
+        self.wm_title("PDF Portfolio Detector") # adding a title to the window
+        self.geometry("900x600") # default size when opened
+
+        self.frames = {} # initialization of the frames array (where the different containers are going to be stored)
+
+        container = tk.Frame(self)  # creating a container (each container is basically 1 page)
+
+        container.pack(side = "top", fill = "both", expand = True) # change customizations later
+        container.grid_rowconfigure(0, weight = 1)
+        container.grid_columnconfigure(0, weight = 1)
+
+        for F in (MainPage, SidePage): #looops through each individual page layout provided by the classes
+            
+            frame = F(container,self) # individual frame
+
+            self.frames[F] = frame # putting in the individual frames (pages) into the "frames" array
+
+            frame.grid(row=0, column=0, sticky = 'nsew')
+
+        self.show_frame(MainPage) # staring page is MainPage class
+
+    def show_frame(self, content): # function to choose which frame to put to the front (what the viewer sees)
+        frame = self.frames[content]
+        frame.tkraise() # puts to front
+
+
+class MainPage(tk.Frame):
+    def __init__(self, parent, controller):
+        self.var=1
+
+
+
+
+class SidePage(tk.Frame):
+    def __init__(self, parent, controller):
+        self.var = 1
+        
+
+>>>>>>> 37bc1c9c98d36fc85fb2c1b4878974a6ea4cf69e
         
 
 if __name__ == "__main__":
