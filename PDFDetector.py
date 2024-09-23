@@ -185,10 +185,13 @@ class SidePage(tk.Frame):
             os.startfile(self.output_path)  #Opens the file explorer at the specified path
         else:
             messagebox.showerror("Error", "The specified path does not exist.")
+        
 
     def update_output_path(self, input_path, output_path):
-        self.output_path = output_path  #Updates the output path
+        self.text_box.config(state=tk.NORMAL)  #Enable editing
         self.text_box.delete(1.0, tk.END)  #Clears previous text
+        self.output_path = output_path  #Updates the output path
+
         self.text_box.insert(tk.END, "Processing Complete!\n")  #Adds a completion message
         self.text_box.insert(tk.END, f"Source Path: {input_path}\n")
         self.text_box.insert(tk.END, f"Output Path: {output_path}\n")
