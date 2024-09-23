@@ -68,10 +68,10 @@ class MainPage(tk.Frame):
             
             # try: # If there is nothing in the field then this will throw error
 
-            if self.path_1 and self.path_2 != '':
-                fileProcessor(input_files, output_path)
-            else:
+            if self.path_1 or self.path_2 == '':
                 messagebox.showerror("Error", "Please Select Both Source and Destination Folders")
+            else:
+                fileProcessor(input_files, output_path)
 
             # except AttributeError:
             #     messagebox.showerror("Error", "Please Select Both Source and Destination Folders")
@@ -112,6 +112,7 @@ class MainPage(tk.Frame):
                     if file.lower().endswith(".pdf"):
 
                         if pypdf.PdfReader(path).is_encrypted:
+                            full_report_rows.append(['ENCRYPTED', '', file, '', '', '', '', '', '', path])
                             print("IT'S PASSWORD PROTECTED")
                             continue
 
@@ -142,21 +143,21 @@ class MainPage(tk.Frame):
                 csv.writer(csvfile).writerows(false_report_rows)
 
             # Controller.show_frame(SidePage)
-            controller.frames[SidePage].update_output_path(input_files, new_dir_path) #Updates output path on SidePage
+            controller.frames[SidePage].update_output_path(input_files, new_dir_path) # Updates output path on SidePage
             controller.show_frame(SidePage)
 
         # Page header
         ttk.Label(self, text="PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y=60)
 
         # Source to scan
-        ttk.Label(self, text="Folder to scan: *", width=50, background='lightblue').place(x=40, y=200)
-        entry1 = ttk.Entry(self, textvariable=path1, width=50, state="disabled").place(x=150, y=200)
-        ttk.Button(self, text="Browse Source", command=selectPath1, width=20).place(x=460, y=198)
+        ttk.Label(self, text="Folder to Scan: *", width=50, background='lightblue').place(x=40, y=200)
+        entry1 = ttk.Entry(self, textvariable=path1, width=50, state="disabled").place(x=160, y=200)
+        ttk.Button(self, text="Browse Source", command=selectPath1, width=20).place(x=470, y=198)
 
         # Destination to place results
-        ttk.Label(self, text="Place to put results: *", background='lightblue').place(x=40, y=300)
-        entry2 = ttk.Entry(self, textvariable=path2, width=50, state="disabled").place(x=150, y=300)
-        ttk.Button(self, text="Browse Destination", command=selectPath2, width=20).place(x=460, y=298)
+        ttk.Label(self, text="Folder to Place\n     Results: *", background='lightblue').place(x=40, y=295)
+        entry2 = ttk.Entry(self, textvariable=path2, width=50, state="disabled").place(x=160, y=300)
+        ttk.Button(self, text="Browse Destination", command=selectPath2, width=20).place(x=470, y=298)
 
         # Button for going to next page
         ttk.Button(self, text="Start", command=lambda: next_step_start(self.path_1, self.path_2), width=10).place(x=560, y=360)
