@@ -99,14 +99,16 @@ class MainPage(tk.Frame):
 
                         if doc.IsPortfolio:
                             true_report_rows.append(['True', '', file, '', '', '', '', '', '', path])
+                            full_report_rows.append(['True', '', file, '', '', '', '', '', '', path])
                         else:
                             false_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
+                            full_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
 
                         doc.Close()
                     else:
                         false_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
+                        full_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
 
-                    full_report_rows.append(['False', '', file, '', '', '', '', '', '', path]) #Append all file results
             
             #Write reports
             with open(full_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
@@ -118,8 +120,9 @@ class MainPage(tk.Frame):
             with open(false_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
                 csv.writer(csvfile).writerows(false_report_rows)
 
-            controller.show_frame(SidePage)
+            # controller.show_frame(SidePage)
             controller.frames[SidePage].update_output_path(input_files, new_dir_path) #Updates output path on SidePage
+            controller.show_frame(SidePage)
 
         #Page header
         ttk.Label(self, text="PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y=60)
