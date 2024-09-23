@@ -1,16 +1,16 @@
+import os
+import sys
+import csv
+import re
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 from functools import partial
-import os
-import sys
 from spire.pdf.common import * # type: ignore
 from spire.pdf import * # type: ignore
 from datetime import datetime
-import csv
-import re
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -49,11 +49,11 @@ class MainPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background='lightblue')
 
-        def selectPath1():   # source
+        def selectPath1():   # Source path
             self.path_1 = filedialog.askdirectory()
             path1.set(self.path_1)
 
-        def selectPath2():   # destination
+        def selectPath2():   # Destination path
             self.path_2 = filedialog.askdirectory()
             path2.set(self.path_2)
 
@@ -113,27 +113,28 @@ class MainPage(tk.Frame):
                 csv.writer(csvfile).writerows(false_report_rows)
 
 
-        path1 = tk.StringVar()   # Receiving user's file_path selection
+        path1 = tk.StringVar()   # Receiving user's source file_path selection
         self.path_1 = ''
-        # folder1 = tk.StringVar() # Receiving user's folder_name selection
 
-        path2 = tk.StringVar()   # Receiving user's file_path selection
+        path2 = tk.StringVar()   # Receiving user's destination file_path selection
         self.path_2 = ''
-        # folder2 = tk.StringVar() # Receiving user's folder_name selection
 
-        ttk.Label(self, text = "PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y= 60) # page header
+        # Page header
+        ttk.Label(self, text = "PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y= 60) 
 
-        # source to scan
-        ttk.Label(self, text = "Folder to scan: *", width=50, background='lightblue').place(x=40, y= 200)
-        ttk.Entry(self, textvariable = path1, width=50).place(x=150, y= 200)
-        ttk.Button(self, text = "Browse Source ", command = selectPath1, width=20).place(x=460, y= 198)
+        # Source to scan
+        ttk.Label(self, text = "Folder To Scan: *", width=50, background='lightblue').place(x=40, y= 200)
+        ttk.Entry(self, textvariable = path1, width=52).place(x=140, y= 200)
+        ttk.Button(self, text = "Browse Source ", command = selectPath1, width=20).place(x=470, y= 198)
 
-        # destination to place
-        ttk.Label(self, text = "Place to put results: *", background='lightblue').place(x=40, y= 300)
-        ttk.Entry(self, textvariable = path2, width=50).place(x=150, y= 300)
-        ttk.Button(self, text = "Browse Destination ", command = selectPath2, width=20).place(x=460, y= 298) 
+        # Destination to place results
+        ttk.Label(self, text = "Folder To Place \n      Results: *", background='lightblue').place(x=40, y= 295)
+        ttk.Entry(self, textvariable = path2, width=52).place(x=140, y= 300)
+        ttk.Button(self, text = "Browse Destination ", command = selectPath2, width=20).place(x=470, y= 298) 
 
-        ttk.Button(self, text = "Start", command = lambda: [fileProcessor(self.path_1, self.path_2), controller.show_frame(SidePage)], width=10).place(x=560, y= 360) # button for going to next page
+        # Button for going to next page
+        ttk.Button(self, text = "Start", command = lambda: [fileProcessor(self.path_1, self.path_2), controller.show_frame(SidePage)], width=10).place(x=560, y= 360)
+    
 
 
 
