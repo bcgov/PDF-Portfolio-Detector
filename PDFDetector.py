@@ -68,10 +68,10 @@ class MainPage(tk.Frame):
             
             # try: # If there is nothing in the field then this will throw error
 
-            if self.path_1 or self.path_2 != '':
-                fileProcessor(input_files, output_path)
-            else:
+            if self.path_1 or self.path_2 == '':
                 messagebox.showerror("Error", "Please Select Both Source and Destination Folders")
+            else:
+                fileProcessor(input_files, output_path)
 
             # except AttributeError:
             #     messagebox.showerror("Error", "Please Select Both Source and Destination Folders")
