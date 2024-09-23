@@ -165,6 +165,7 @@ class SidePage(tk.Frame):
             messagebox.showerror("Error", "The specified path does not exist.")
 
     def update_output_path(self, input_path, output_path):
+        self.text_box.config(state=tk.NORMAL)  #Enable editing
         self.output_path = output_path  #Updates the output path
         self.text_box.delete(1.0, tk.END)  #Clears previous text
         self.text_box.insert(tk.END, "Processing Complete!\n")  #Adds a completion message
