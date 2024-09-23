@@ -1,2 +1,2 @@
 # PDF-Portfolio-Detector
-Python script to scan through folders and its subfolders to determine PDF Portfolios within.
+Python application to scan through a folder and its subfolders to determine PDF Portfolios within.
