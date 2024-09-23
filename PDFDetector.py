@@ -43,6 +43,8 @@ class windows(tk.Tk):
 
         if content == SidePage and output_path: #updates output path with path given by user
             frame.update_output_path(output_path)
+        if content == MainPage:
+        frame.reset_paths()  #Reset paths when returning to MainPage
 
 
 class MainPage(tk.Frame):
