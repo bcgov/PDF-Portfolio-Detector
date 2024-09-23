@@ -101,7 +101,7 @@ class MainPage(tk.Frame):
             false_report_csv = os.path.join(new_dir_path, f'Only False - {title}.csv')
             
             # Initialize report lists
-            full_report_rows = []
+            full_report_rows = [['Is Portfolio', '', 'File Name', '', '', '', '', '', '', 'Path to portfolio files']]
             true_report_rows = [['Is Portfolio', '', 'File Name', '', '', '', '', '', '', 'Path to portfolio files']]
             false_report_rows = [['Is Portfolio', '', 'File Name', '', '', '', '', '', '', 'Path to portfolio files']]
 
