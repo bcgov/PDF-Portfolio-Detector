@@ -143,7 +143,7 @@ class MainPage(tk.Frame):
                 csv.writer(csvfile).writerows(false_report_rows)
 
             # Controller.show_frame(SidePage)
-            controller.frames[SidePage].update_output_path(input_files, new_dir_path) # Updates output path on SidePage
+            controller.frames[SidePage].update_output_path(input_files, output_path, title) # Updates output path on SidePage
             controller.show_frame(SidePage)
 
         # Page header
@@ -187,14 +187,14 @@ class SidePage(tk.Frame):
             messagebox.showerror("Error", "The specified path does not exist.")
         
 
-    def update_output_path(self, input_path, output_path):
+    def update_output_path(self, input_path, output_path, title):
         self.text_box.config(state=tk.NORMAL)  # Enable editing
         self.text_box.delete(1.0, tk.END)  # Clears previous text
-        self.output_path = output_path  # Updates the output path
+        self.output_path = output_path +"/"+ title  # Updates the output path
 
         self.text_box.insert(tk.END, "Processing Complete!\n")  # Adds a completion message
         self.text_box.insert(tk.END, f"Source Path: {input_path}\n")
-        self.text_box.insert(tk.END, f"Output Path: {output_path}\n")
+        self.text_box.insert(tk.END, f"Output Path: {output_path}/{title}\n")
         self.text_box.config(state=tk.DISABLED)  # Makes text read only
 
 
