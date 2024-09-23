@@ -167,34 +167,34 @@ class SidePage(tk.Frame):
         tk.Frame.__init__(self, parent, background='lightblue')
         self.output_path = ""
 
-        #Text widget to store the text
+        # Text widget to store the text
         self.text_box = tk.Text(self, height=10, width=60)
         self.text_box.place(x=100, y=130)
 
-        #Buttons for rerunning code and closing gui
+        # Buttons for rerunning code and closing gui
         ttk.Button(self, text="Back", command=lambda: controller.show_frame(MainPage)).place(x=460, y=360)
         ttk.Button(self, text="Close", command=controller.destroy).place(x=560, y=360)
 
         ttk.Label(self, text="Source:", font='bold', background=self.cget('background'), foreground='black').place(x=100, y=100)
-        #Button for the results file directory
+        # Button for the results file directory
         ttk.Button(self, text="Results", command=self.open_results).place(x=30, y=360)
 
     def open_results(self):
         if os.path.exists(self.output_path):
-            os.startfile(self.output_path)  #Opens the file explorer at the specified path
+            os.startfile(self.output_path)  # Opens the file explorer at the specified path
         else:
             messagebox.showerror("Error", "The specified path does not exist.")
         
 
     def update_output_path(self, input_path, output_path):
-        self.text_box.config(state=tk.NORMAL)  #Enable editing
-        self.text_box.delete(1.0, tk.END)  #Clears previous text
-        self.output_path = output_path  #Updates the output path
+        self.text_box.config(state=tk.NORMAL)  # Enable editing
+        self.text_box.delete(1.0, tk.END)  # Clears previous text
+        self.output_path = output_path  # Updates the output path
 
-        self.text_box.insert(tk.END, "Processing Complete!\n")  #Adds a completion message
+        self.text_box.insert(tk.END, "Processing Complete!\n")  # Adds a completion message
         self.text_box.insert(tk.END, f"Source Path: {input_path}\n")
         self.text_box.insert(tk.END, f"Output Path: {output_path}\n")
-        self.text_box.config(state=tk.DISABLED)  #Makes text read only
+        self.text_box.config(state=tk.DISABLED)  # Makes text read only
 
 
 if __name__ == "__main__":
