@@ -10,7 +10,7 @@ import csv
 from spire.pdf.common import *  #type: ignore
 from spire.pdf import *  #type: ignore
 from datetime import datetime
-import pypdf
+import PyPDF2
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -111,10 +111,17 @@ class MainPage(tk.Frame):
 
                     if file.lower().endswith(".pdf"):
 
-                        if pypdf.PdfReader(path).is_encrypted:
+                        if PyPDF2.PdfReader(path).is_encrypted:
                             full_report_rows.append(['ENCRYPTED', '', file, '', '', '', '', '', '', path])
                             print("IT'S PASSWORD PROTECTED")
                             continue
+
+                        with open(path, 'rb') as cur:
+                            if PyPDF2.PdfReader(path).get_fields():
+                                full_report_rows.append(['FORM FIELDS', '', file, '', '', '', '', '', '', path])
+                                print('GOT FORM FIELDS')
+                                continue
+
 
                         doc = PdfDocument()
                         doc.LoadFromFile(path)
