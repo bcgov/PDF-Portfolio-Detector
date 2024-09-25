@@ -47,7 +47,9 @@ class windows(tk.Tk):
 
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, background='lightblue')
+        # tk.Frame.__init__(self, parent, background='lightblue')
+        tk.Frame.__init__(self, parent)
+        
         self.controller = controller  # Store controller reference
 
         self.path_1 = ''
@@ -154,6 +156,20 @@ class MainPage(tk.Frame):
             controller.frames[SidePage].update_output_path(input_files, output_path, title) # Updates output path on SidePage
             controller.show_frame(SidePage)
 
+        #background image
+        self.bg = PhotoImage(file="G:/STAFF Workspaces/Kevin Workspace/Github Repos/black and white.png")
+
+        label1 = Label(self, image = self.bg) 
+        label1.place(x = 0, y = 0) 
+        label1.pack()
+
+        # canvas1 = Canvas(self, width = 400, height = 400) 
+
+        # canvas1.pack(fill = "both", expand = True) 
+
+        # canvas1.create_image( 0, 0, image = bg,  
+        #              anchor = "nw") 
+
         # Page header
         ttk.Label(self, text="PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y=60)
 
@@ -179,6 +195,12 @@ class SidePage(tk.Frame):
         # Text widget to store the text
         self.text_box = tk.Text(self, height=10, width=60)
         self.text_box.place(x=100, y=130)
+
+        self.bg = PhotoImage(file="G:/STAFF Workspaces/Kevin Workspace/Github Repos/penguin.png")
+
+        label1 = Label(self, image = self.bg) 
+        label1.place(x = 0, y = 0) 
+        label1.pack()
 
         # Buttons for rerunning code and closing gui
         ttk.Button(self, text="Back", command=lambda: controller.show_frame(MainPage)).place(x=460, y=360)
@@ -222,5 +244,5 @@ class SidePage(tk.Frame):
 
 if __name__ == "__main__":
     detector = windows()
-    detector.resizable(False, False)
+    # detector.resizable(False, False)
     detector.mainloop()
