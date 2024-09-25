@@ -11,6 +11,7 @@ from spire.pdf.common import *  #type: ignore
 from spire.pdf import *  #type: ignore
 from datetime import datetime
 import PyPDF2
+from PIL import Image, ImageTk
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -157,29 +158,28 @@ class MainPage(tk.Frame):
             controller.show_frame(SidePage)
 
         #background image
-        self.bg = PhotoImage(file="G:/STAFF Workspaces/Kevin Workspace/Github Repos/black and white.png")
+        canvas = tk.Canvas(self, height=400, width=650)
+        canvas.pack()
 
-        label1 = Label(self, image = self.bg) 
-        label1.place(x = 0, y = 0) 
-        label1.pack()
+        img = (Image.open("G:/STAFF Workspaces/Kevin Workspace/Github Repos/abstract.png"))
 
-        # canvas1 = Canvas(self, width = 400, height = 400) 
+        resized_image= img.resize((650,400), Image.ANTIALIAS)
+        self.new_image= ImageTk.PhotoImage(resized_image)
 
-        # canvas1.pack(fill = "both", expand = True) 
-
-        # canvas1.create_image( 0, 0, image = bg,  
-        #              anchor = "nw") 
+        canvas.create_image( 0, 0, image = self.new_image, anchor="nw")
 
         # Page header
-        ttk.Label(self, text="PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y=60)
+        canvas.create_text(220, 80, text="PDF Portfolio Detector", fill="black", font=('Arial 25 bold'))
 
         # Source to scan
-        ttk.Label(self, text="Folder to Scan: *", width=50, background='lightblue', font=("bold")).place(x=40, y=200)
+        canvas.create_text(85, 207, text="Folder to Scan: *", fill="black", font=('bold'))
+        # ttk.Label(self, text="Folder to Scan: *", width=50, background='lightblue', font=("bold")).place(x=40, y=200)
         entry1 = ttk.Entry(self, textvariable=path1, width=50, state="disabled").place(x=160, y=200)
         ttk.Button(self, text="Browse Source", command=selectPath1, width=20).place(x=470, y=198)
 
         # Destination to place results
-        ttk.Label(self, text="Folder to Place\n     Results: *", background='lightblue', font=("bold")).place(x=40, y=295)
+        canvas.create_text(85, 310, text="Folder to Place\n     Results: *", fill="black", font=('bold'))
+        # ttk.Label(self, text="Folder to Place\n     Results: *", background='lightblue', font=("bold")).place(x=40, y=295)
         entry2 = ttk.Entry(self, textvariable=path2, width=50, state="disabled").place(x=160, y=300)
         ttk.Button(self, text="Browse Destination", command=selectPath2, width=20).place(x=470, y=298)
 
@@ -195,12 +195,6 @@ class SidePage(tk.Frame):
         # Text widget to store the text
         self.text_box = tk.Text(self, height=10, width=60)
         self.text_box.place(x=100, y=130)
-
-        self.bg = PhotoImage(file="G:/STAFF Workspaces/Kevin Workspace/Github Repos/penguin.png")
-
-        label1 = Label(self, image = self.bg) 
-        label1.place(x = 0, y = 0) 
-        label1.pack()
 
         # Buttons for rerunning code and closing gui
         ttk.Button(self, text="Back", command=lambda: controller.show_frame(MainPage)).place(x=460, y=360)
