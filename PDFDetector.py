@@ -125,6 +125,7 @@ class MainPage(tk.Frame):
 
                         doc = PdfDocument()
                         doc.LoadFromFile(path)
+                        
 
                         if doc.IsPortfolio:
                             true_report_rows.append(['True', '', file, '', '', '', '', '', '', path])
@@ -157,12 +158,12 @@ class MainPage(tk.Frame):
         ttk.Label(self, text="PDF Portfolio Detector", width=50, background='lightblue', font=("Arial", 25)).place(x=40, y=60)
 
         # Source to scan
-        ttk.Label(self, text="Folder to Scan: *", width=50, background='lightblue').place(x=40, y=200)
+        ttk.Label(self, text="Folder to Scan: *", width=50, background='lightblue', font=("bold")).place(x=40, y=200)
         entry1 = ttk.Entry(self, textvariable=path1, width=50, state="disabled").place(x=160, y=200)
         ttk.Button(self, text="Browse Source", command=selectPath1, width=20).place(x=470, y=198)
 
         # Destination to place results
-        ttk.Label(self, text="Folder to Place\n     Results: *", background='lightblue').place(x=40, y=295)
+        ttk.Label(self, text="Folder to Place\n     Results: *", background='lightblue', font=("bold")).place(x=40, y=295)
         entry2 = ttk.Entry(self, textvariable=path2, width=50, state="disabled").place(x=160, y=300)
         ttk.Button(self, text="Browse Destination", command=selectPath2, width=20).place(x=470, y=298)
 
@@ -210,9 +211,9 @@ class SidePage(tk.Frame):
 
         self.text_box.insert(tk.END, "Processing Complete!\n")  # Adds a completion message
         self.text_box.insert(tk.END, f"Source Path: {input_path}\n")
-        print(input_path)
+        # print(input_path)
         self.text_box.insert(tk.END, f"Output Path: {output_path}/{title}\n")
-        print(output_path)
+        # print(output_path)
         self.text_box.config(state=tk.DISABLED)  # Makes text read only
 
     
