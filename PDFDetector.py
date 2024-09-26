@@ -119,21 +119,17 @@ class MainPage(tk.Frame):
                                 print('GOT FORM FIELDS')
                                 continue
 
-
                         doc = PdfDocument()
                         doc.LoadFromFile(path)
-                        
 
                         if doc.IsPortfolio:
                             portfolio_report_rows.append(['PDF PORTFOLIO', '', '', '', file, '', '', '', '', '', '', path])
                             full_report_rows.append(['PDF PORTFOLIO', '', '', '', file, '', '', '', '', '', '', path])
                         else:
-                            # encrypted_report_rows.append(['False', '', '', '', file, '', '', '', '', '', '', path])
                             full_report_rows.append(['NONE', '', '', '', file, '', '', '', '', '', '', path])
 
                         doc.Close()
                     else:
-                        # encrypted_report_rows.append(['False', '', '', '', file, '', '', '', '', '', '', path])
                         full_report_rows.append(['NONE', '', '', '', file, '', '', '', '', '', '', path])
 
             
@@ -167,15 +163,13 @@ class MainPage(tk.Frame):
 
         # Source to scan
         canvas.create_text(85, 207, text="Folder to Scan: *", fill="black", font=('bold'))
-        # ttk.Label(self, text="Folder to Scan: *", width=50, background='lightblue', font=("bold")).place(x=40, y=200)
         entry1 = ttk.Entry(self, textvariable=path1, width=50, state="disabled").place(x=160, y=200)
-        ttk.Button(self, text="Browse Source", command=selectPath1, width=20).place(x=470, y=198)
+        button1 = ttk.Button(self, text="Browse Source", command=selectPath1, width=20).place(x=470, y=198)
 
         # Destination to place results
         canvas.create_text(85, 310, text="Folder to Place\n     Results: *", fill="black", font=('bold'))
-        # ttk.Label(self, text="Folder to Place\n     Results: *", background='lightblue', font=("bold")).place(x=40, y=295)
         entry2 = ttk.Entry(self, textvariable=path2, width=50, state="disabled").place(x=160, y=300)
-        ttk.Button(self, text="Browse Destination", command=selectPath2, width=20).place(x=470, y=298)
+        button2 = ttk.Button(self, text="Browse Destination", command=selectPath2, width=20).place(x=470, y=298)
 
         # Button for going to next page
         ttk.Button(self, text="Start", command=lambda: next_step_start(self.path_1, self.path_2), width=10).place(x=560, y=360)
