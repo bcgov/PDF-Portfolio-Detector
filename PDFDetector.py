@@ -183,18 +183,31 @@ class MainPage(tk.Frame):
 
 class SidePage(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, background='lightblue')
+        tk.Frame.__init__(self, parent)
         self.output_path = ""
 
+        #Background image
+        canvas = tk.Canvas(self, height=400, width=650)
+        canvas.pack()
+
+        img = (Image.open("G:/STAFF Workspaces/Kevin Workspace/Github Repos/abstract.png"))
+
+        resized_image= img.resize((650,400), Image.ANTIALIAS)
+        self.new_image= ImageTk.PhotoImage(resized_image)
+
+        canvas.create_image( 0, 0, image = self.new_image, anchor="nw")
+
+        # Page header
+        canvas.create_text(137, 110, text="Source:", fill="black", font=('Arial 16 bold'))
+
         # Text widget to store the text
-        self.text_box = tk.Text(self, height=10, width=60)
+        self.text_box = tk.Text(self, height=10, width=60, background = '#F0F0F0')
         self.text_box.place(x=100, y=130)
 
         # Buttons for rerunning code and closing gui
         ttk.Button(self, text="Back", command=lambda: controller.show_frame(MainPage)).place(x=460, y=360)
         ttk.Button(self, text="Close", command=controller.destroy).place(x=560, y=360)
 
-        ttk.Label(self, text="Source:", font='bold', background=self.cget('background'), foreground='black').place(x=100, y=100)
         # Button for the results file directory
         ttk.Button(self, text="Results", command=self.open_results).place(x=30, y=360)
 
@@ -207,6 +220,7 @@ class SidePage(tk.Frame):
 
     def update_output_path(self, input_path, output_path, title):
 
+        # Updates output path to fix backwards slashes in directory string
         temp = ""
         for char in output_path:
             if char == "/":
@@ -226,9 +240,6 @@ class SidePage(tk.Frame):
         # print(output_path)
         self.text_box.config(state=tk.DISABLED)  # Makes text read only
 
-    
-    
-            
 
 if __name__ == "__main__":
     detector = windows()
