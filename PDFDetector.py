@@ -18,7 +18,7 @@ class windows(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)# for the class Tk
 
         self.wm_title("PDF Portfolio Detector") # Adding a title to the window
-        # self.wm_attributes('-transparentcolor', self['bg'])
+
         self.geometry("650x400") # Default size when opened
 
         self.frames = {} # Initialization of the frames array (where the different containers are going to be stored)
@@ -48,7 +48,7 @@ class windows(tk.Tk):
 
 class MainPage(tk.Frame):
     def __init__(self, parent, controller):
-        # tk.Frame.__init__(self, parent, background='lightblue')
+
         tk.Frame.__init__(self, parent)
         
         self.controller = controller  # Store controller reference
@@ -68,19 +68,11 @@ class MainPage(tk.Frame):
             path2.set(self.path_2)
 
         def next_step_start(input_files, output_path): # Makes sure that both source and destination folders are selected
-            
-            # try: # If there is nothing in the field then this will throw error
 
             if self.path_1 == '' or self.path_2 == '':
                 messagebox.showerror("Error", "Please Select Both Source and Destination Folders")
             else:
                 fileProcessor(input_files, output_path)
-
-            # except AttributeError:
-            #     messagebox.showerror("Error", "Please Select Both Source and Destination Folders")
-
-            # except:
-            #     messagebox.showerror("Error", "Please Check Your Directory/Folder And Try Again")
                 
         def fileProcessor(input_files, output_path): # Convert input files and output path to string
 
@@ -99,14 +91,14 @@ class MainPage(tk.Frame):
             os.mkdir(new_dir_path)
 
             # CSV file paths - update to use new_dir_path
-            full_report_csv = os.path.join(new_dir_path, f'Report - {title}.csv')
-            true_report_csv = os.path.join(new_dir_path, f'Only True - {title}.csv')
-            false_report_csv = os.path.join(new_dir_path, f'Only False - {title}.csv')
+            full_report_csv = os.path.join(new_dir_path, f'Full Report - {title}.csv')
+            encrypted_report_csv = os.path.join(new_dir_path, f'Encrypted & Form Fields - {title}.csv')
+            portfolio_report_csv = os.path.join(new_dir_path, f'PDF Portfolios - {title}.csv')
             
             # Initialize report lists
-            full_report_rows = [['Is Portfolio', '', 'File Name', '', '', '', '', '', '', 'Path to portfolio files']]
-            true_report_rows = [['Is Portfolio', '', 'File Name', '', '', '', '', '', '', 'Path to portfolio files']]
-            false_report_rows = [['Is Portfolio', '', 'File Name', '', '', '', '', '', '', 'Path to portfolio files']]
+            full_report_rows = [['Document Type', '', '', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
+            portfolio_report_rows = [['Document Type', '', '', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
+            encrypted_report_rows = [['Document Type', '', '', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
 
             for current_path, folders, files in os.walk(input_files):
                 for file in files:
@@ -115,13 +107,15 @@ class MainPage(tk.Frame):
                     if file.lower().endswith(".pdf"):
 
                         if PyPDF2.PdfReader(path).is_encrypted:
-                            full_report_rows.append(['ENCRYPTED', '', file, '', '', '', '', '', '', path])
+                            full_report_rows.append(['ENCRYPTED', '', '', '', file, '', '', '', '', '', '', path])
+                            encrypted_report_rows.append(['ENCRYPTED', '', '', '', file, '', '', '', '', '', '', path])
                             print("IT'S PASSWORD PROTECTED")
                             continue
 
                         with open(path, 'rb') as cur:
                             if PyPDF2.PdfReader(path).get_fields():
-                                full_report_rows.append(['FORM FIELDS', '', file, '', '', '', '', '', '', path])
+                                full_report_rows.append(['FORM FIELDS', '', '', '', file, '', '', '', '', '', '', path])
+                                encrypted_report_rows.append(['FORM FIELDS', '', '', '', file, '', '', '', '', '', '', path])
                                 print('GOT FORM FIELDS')
                                 continue
 
@@ -131,27 +125,27 @@ class MainPage(tk.Frame):
                         
 
                         if doc.IsPortfolio:
-                            true_report_rows.append(['True', '', file, '', '', '', '', '', '', path])
-                            full_report_rows.append(['True', '', file, '', '', '', '', '', '', path])
+                            portfolio_report_rows.append(['PDF PORTFOLIO', '', '', '', file, '', '', '', '', '', '', path])
+                            full_report_rows.append(['PDF PORTFOLIO', '', '', '', file, '', '', '', '', '', '', path])
                         else:
-                            false_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
-                            full_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
+                            # encrypted_report_rows.append(['False', '', '', '', file, '', '', '', '', '', '', path])
+                            full_report_rows.append(['NONE', '', '', '', file, '', '', '', '', '', '', path])
 
                         doc.Close()
                     else:
-                        false_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
-                        full_report_rows.append(['False', '', file, '', '', '', '', '', '', path])
+                        # encrypted_report_rows.append(['False', '', '', '', file, '', '', '', '', '', '', path])
+                        full_report_rows.append(['NONE', '', '', '', file, '', '', '', '', '', '', path])
 
             
             # Write reports
             with open(full_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
                 csv.writer(csvfile).writerows(full_report_rows)
 
-            with open(true_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
-                csv.writer(csvfile).writerows(true_report_rows)
+            with open(portfolio_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
+                csv.writer(csvfile).writerows(portfolio_report_rows)
 
-            with open(false_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
-                csv.writer(csvfile).writerows(false_report_rows)
+            with open(encrypted_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
+                csv.writer(csvfile).writerows(encrypted_report_rows)
 
             # Controller.show_frame(SidePage)
             controller.frames[SidePage].update_output_path(input_files, output_path, title) # Updates output path on SidePage
