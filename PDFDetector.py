@@ -189,24 +189,24 @@ class MainPage(tk.Frame):
 
 class SidePage(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, background='lightblue')
+        tk.Frame.__init__(self, parent)
         self.output_path = ""
 
-        # Text widget to store the text
-        self.text_box = tk.Text(self, height=10, width=60)
-        self.text_box.place(x=100, y=130)
-
-        self.bg = PhotoImage(file="G:/STAFF Workspaces/Kevin Workspace/Github Repos/penguin.png")
-
+        #Background image
+        self.bg = PhotoImage(file="G:/STAFF Workspaces/Kevin Workspace/Github Repos/black and white.png")
         label1 = Label(self, image = self.bg) 
-        label1.place(x = 0, y = 0) 
+        label1.place(relwidth = 1, relheight = 1) 
         label1.pack()
+
+        # Text widget to store the text
+        self.text_box = tk.Text(self, height=10, width=60, background = '#F0F0F0')
+        self.text_box.place(x=100, y=130)
 
         # Buttons for rerunning code and closing gui
         ttk.Button(self, text="Back", command=lambda: controller.show_frame(MainPage)).place(x=460, y=360)
         ttk.Button(self, text="Close", command=controller.destroy).place(x=560, y=360)
 
-        ttk.Label(self, text="Source:", font='bold', background=self.cget('background'), foreground='black').place(x=100, y=100)
+        ttk.Label(self, text="Source:", font='bold').place(x=100, y=100)
         # Button for the results file directory
         ttk.Button(self, text="Results", command=self.open_results).place(x=30, y=360)
 
