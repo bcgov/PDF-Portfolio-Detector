@@ -192,7 +192,7 @@ class SidePage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.output_path = ""
 
-        #Background image
+        # Background image
         canvas = tk.Canvas(self, height=400, width=650)
         canvas.pack()
 
