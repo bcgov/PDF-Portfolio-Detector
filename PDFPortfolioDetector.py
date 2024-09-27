@@ -79,8 +79,8 @@ class MainPage(tk.Frame):
             output_path = str(output_path)
 
             # Debugging output
-            print("Input Directory:", input_files)
-            print("Output Directory:", output_path)
+            # print("Input Directory:", input_files)
+            # print("Output Directory:", output_path)
 
             # Create a timestamped directory for output
             date_title = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
@@ -108,14 +108,14 @@ class MainPage(tk.Frame):
                         if PyPDF2.PdfReader(path).is_encrypted:
                             full_report_rows.append(['ENCRYPTED', '', '', '', file, '', '', '', '', '', '', path])
                             encrypted_report_rows.append(['ENCRYPTED', '', '', '', file, '', '', '', '', '', '', path])
-                            print("IT'S PASSWORD PROTECTED")
+                            # print("IT'S PASSWORD PROTECTED")
                             continue
 
                         with open(path, 'rb') as cur:
                             if PyPDF2.PdfReader(path).get_fields():
                                 full_report_rows.append(['FORM FIELDS', '', '', '', file, '', '', '', '', '', '', path])
                                 encrypted_report_rows.append(['FORM FIELDS', '', '', '', file, '', '', '', '', '', '', path])
-                                print('GOT FORM FIELDS')
+                                # print('GOT FORM FIELDS')
                                 continue
 
                         doc = PdfDocument()
