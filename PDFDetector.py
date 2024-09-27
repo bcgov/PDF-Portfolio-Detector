@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
-from functools import partial
 import os
 import sys
 import csv
@@ -151,7 +150,7 @@ class MainPage(tk.Frame):
         canvas = tk.Canvas(self, height=400, width=650)
         canvas.pack()
 
-        img = (Image.open("G:/STAFF Workspaces/Kevin Workspace/Github Repos/abstract.png"))
+        img = (Image.open("./Do Not Touch/abstract.png"))
 
         resized_image= img.resize((650,400), Image.ANTIALIAS)
         self.new_image= ImageTk.PhotoImage(resized_image)
@@ -184,7 +183,7 @@ class SidePage(tk.Frame):
         canvas = tk.Canvas(self, height=400, width=650)
         canvas.pack()
 
-        img = (Image.open("G:/STAFF Workspaces/Kevin Workspace/Github Repos/abstract.png"))
+        img = (Image.open("./Do Not Touch/abstract.png"))
 
         resized_image= img.resize((650,400), Image.ANTIALIAS)
         self.new_image= ImageTk.PhotoImage(resized_image)
@@ -237,5 +236,5 @@ class SidePage(tk.Frame):
 
 if __name__ == "__main__":
     detector = windows()
-    # detector.resizable(False, False)
+    detector.resizable(False, False)
     detector.mainloop()
