@@ -14,7 +14,7 @@
 
 5. Find the directory of your folder, this can be achieved by opening your PDFPortfolioDetector folder and right clicking the "README.MD" and selecting properties. In there, you will see the "Location:" or "Directory:". Then, copy that line of text.
 
-6. Go back to your terminal or powershell and type the two letter cd then press space bar then paste the line of text you copied from step 5.
+6. Go back to your terminal or powershell and type the two letter cd then press space bar then paste the line of text you copied from step 5. (Make sure that you put your directory in quotations)
 
 7. The terminal or powershell should now show your line of text. Now, type "python" then press space bar then "./PDFPortfolioDetector.py" (type all those without the quotations)
 
