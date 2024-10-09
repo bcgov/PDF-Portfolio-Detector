@@ -10,7 +10,7 @@
 
 3. Close the terminal when it says press any key to continue.
 
-4. Open the command prompt or windows powershell by right clicking at the bottom right windows icon and selecting the option "Windows Powershell". (Make sure NOT to select windows pwoershell admin)
+4. Open the command prompt or windows powershell by right clicking at the bottom right windows icon and selecting the option "Windows Powershell". (Make sure NOT to select Windows Powershell admin)
 
 5. Find the directory of your folder, this can be achieved by opening your PDFPortfolioDetector folder and right clicking the "README.MD" and selecting properties. In there, you will see the "Location:" or "Directory:". Then, copy that line of text.
 
