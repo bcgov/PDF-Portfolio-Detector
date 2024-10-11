@@ -1,6 +1,6 @@
 # PDF Portfolio Detector
 
-### Note: Has only been tested on windows 10. Therefore, may only work on windows 10.
+### Note: Has only been tested on windows 10 and Python 3.12.
 
 ## Installation Guide:
 
