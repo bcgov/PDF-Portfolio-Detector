@@ -1,0 +1,2 @@
+python .\PDFPortfolioDetector.py
+

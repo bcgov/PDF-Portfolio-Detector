@@ -1,0 +1,4 @@
+Spire.Pdf==10.1.1
+pypdf2
+Pillow==9.5.0
+tk
