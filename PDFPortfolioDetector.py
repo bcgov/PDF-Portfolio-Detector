@@ -85,7 +85,7 @@ class MainPage(tk.Frame):
             # Create a timestamped directory for output
             date_title = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
             user = os.getlogin()
-            title = f"{user} {date_title}"
+            title = f"{date_title} {user}" # Shows time then user idir
             new_dir_path = os.path.join(output_path, title)
             os.mkdir(new_dir_path)
 
