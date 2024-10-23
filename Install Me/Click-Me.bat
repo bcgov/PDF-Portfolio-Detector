@@ -14,6 +14,7 @@ pip install Spire.Pdf==10.1.1
 pip install pypdf2
 pip install Pillow==9.5.0
 pip install tk
+pip install pypdf
 
 
 pause

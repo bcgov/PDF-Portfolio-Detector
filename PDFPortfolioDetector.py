@@ -10,6 +10,7 @@ from spire.pdf.common import *  #type: ignore
 from spire.pdf import *  #type: ignore
 from datetime import datetime
 import PyPDF2
+from pypdf import PdfReader
 from PIL import Image, ImageTk
 
 class windows(tk.Tk):
@@ -58,6 +59,19 @@ class MainPage(tk.Frame):
         path1 = tk.StringVar() # Receiving user's source file_path selection
         path2 = tk.StringVar() # Receiving user's destination file_path selection
 
+        def bracket_checker(check_path):
+            # Updates the input path to fix backwards slashes in directory string
+            temp = ""
+            for char in check_path:
+                if char == "/":
+                    char = "\\"
+                elif char == "//":
+                    char = '\\\\'
+                temp = temp + char
+            check_path = temp
+            return check_path
+
+
         def selectPath1(): # Source path
             self.path_1 = filedialog.askdirectory()
             path1.set(self.path_1)
@@ -95,26 +109,34 @@ class MainPage(tk.Frame):
             portfolio_report_csv = os.path.join(new_dir_path, f'PDF Portfolios - {title}.csv')
             
             # Initialize report lists
-            full_report_rows = [['Document Type', '', '', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
-            portfolio_report_rows = [['Document Type', '', '', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
-            encrypted_report_rows = [['Document Type', '', '', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
+            full_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
+            portfolio_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
+            encrypted_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
 
             for current_path, folders, files in os.walk(input_files):
                 for file in files:
                     path = os.path.join(current_path, file)
 
                     if file.lower().endswith(".pdf"):
+                        
+                        test = current_path + '/' + file
+                        reader = PdfReader(test)
+                        version = reader.pdf_header[1:]
+                        print(reader.pdf_header)
+
 
                         if PyPDF2.PdfReader(path).is_encrypted:
-                            full_report_rows.append(['ENCRYPTED', '', '', '', file, '', '', '', '', '', '', path])
-                            encrypted_report_rows.append(['ENCRYPTED', '', '', '', file, '', '', '', '', '', '', path])
+                            path = bracket_checker(path)
+                            full_report_rows.append(['ENCRYPTED', '', '', version, '', file, '', '', '', '', '', '', path])
+                            encrypted_report_rows.append(['ENCRYPTED', '', '', version, '', file, '', '', '', '', '', '', path])
                             # print("IT'S PASSWORD PROTECTED")
                             continue
 
                         with open(path, 'rb') as cur:
                             if PyPDF2.PdfReader(path).get_fields():
-                                full_report_rows.append(['FORM FIELDS', '', '', '', file, '', '', '', '', '', '', path])
-                                encrypted_report_rows.append(['FORM FIELDS', '', '', '', file, '', '', '', '', '', '', path])
+                                path = bracket_checker(path)
+                                full_report_rows.append(['FORM FIELDS', '', '', version, '', file, '', '', '', '', '', '', path])
+                                encrypted_report_rows.append(['FORM FIELDS', '', '', version, '', file, '', '', '', '', '', '', path])
                                 # print('GOT FORM FIELDS')
                                 continue
 
@@ -122,14 +144,18 @@ class MainPage(tk.Frame):
                         doc.LoadFromFile(path)
 
                         if doc.IsPortfolio:
-                            portfolio_report_rows.append(['PDF PORTFOLIO', '', '', '', file, '', '', '', '', '', '', path])
-                            full_report_rows.append(['PDF PORTFOLIO', '', '', '', file, '', '', '', '', '', '', path])
+                            path = bracket_checker(path)
+                            portfolio_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
+                            full_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
                         else:
-                            full_report_rows.append(['NONE', '', '', '', file, '', '', '', '', '', '', path])
+                            path = bracket_checker(path)
+                            full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
 
                         doc.Close()
                     else:
-                        full_report_rows.append(['NONE', '', '', '', file, '', '', '', '', '', '', path])
+                        path = bracket_checker(path)
+                        version = ''
+                        full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
 
             
             # Write reports
@@ -218,18 +244,32 @@ class SidePage(tk.Frame):
         for char in output_path:
             if char == "/":
                 char = "\\"
+            elif char == "//":
+                    char = '\\\\'
             temp = temp + char
 
         output_path = temp
 
+        temp = ""
+        for char in input_path:
+            if char == "/":
+                char = "\\"
+            elif char == "//":
+                    char = '\\\\'
+            temp = temp + char
+
+        input_path = temp
+
         self.text_box.config(state=tk.NORMAL)  # Enable editing
         self.text_box.delete(1.0, tk.END)  # Clears previous text
-        self.output_path = output_path +"\\"+ title  # Updates the output path
+        # self.output_path = output_path +"\\"+ title  # Updates the output path
+        self.output_path = output_path + title
+        print("output path: ", output_path)
 
         self.text_box.insert(tk.END, "Processing Complete!\n")  # Adds a completion message
         self.text_box.insert(tk.END, f"Source Path: {input_path}\n")
         # print(input_path)
-        self.text_box.insert(tk.END, f"Output Path: {output_path}/{title}\n")
+        self.text_box.insert(tk.END, f"Output Path: {output_path}{title}\n")
         # print(output_path)
         self.text_box.config(state=tk.DISABLED)  # Makes text read only
 
