@@ -13,6 +13,7 @@ import PyPDF2
 from pypdf import PdfReader
 from PIL import Image, ImageTk
 from itertools import islice
+import shutil
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -57,11 +58,11 @@ class MainPage(tk.Frame):
         with open('./Do Not Touch/cache.txt', "r") as f:
 
             temp = f.readline().split('\n')[0] # Reads folder to scan
-            print("readline1: ", temp)
+            # print("readline1: ", temp)
             self.path_1 = temp
 
             temp = f.readline().split('\n')[0] # Reads folder to place results
-            print("readline2: ", temp)
+            # print("readline2: ", temp)
             self.path_2 = temp
 
         path1 = tk.StringVar() # Receiving user's source file_path selection
@@ -130,7 +131,11 @@ class MainPage(tk.Frame):
             user = os.getlogin()
             title = f"{date_title} {user}" # Shows time then user idir
             new_dir_path = os.path.join(output_path, title)
+            print(new_dir_path)
             os.mkdir(new_dir_path)
+            os.mkdir(new_dir_path + '\\Encrypted_files') # Encrypted folder
+            os.mkdir(new_dir_path + '\\Form_Fields_files') # Form Field folder
+            os.mkdir(new_dir_path + '\\Portfolio_files') # Portfolio folder
 
             # CSV file paths - update to use new_dir_path
             full_report_csv = os.path.join(new_dir_path, f'Full Report - {title}.csv')
@@ -138,9 +143,9 @@ class MainPage(tk.Frame):
             portfolio_report_csv = os.path.join(new_dir_path, f'PDF Portfolios - {title}.csv')
             
             # Initialize report lists
-            full_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
-            portfolio_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
-            encrypted_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files']]
+            full_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files'],[]]
+            portfolio_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files'],[]]
+            encrypted_report_rows = [['Document Type', '', '', 'PDF Version', '', 'File Name', '', '', '', '', '', '', 'Path to files'],[]]
 
             for current_path, folders, files in os.walk(input_files):
                 for file in files:
@@ -151,13 +156,14 @@ class MainPage(tk.Frame):
                         test = current_path + '/' + file
                         reader = PdfReader(test)
                         version = reader.pdf_header[1:]
-                        print(reader.pdf_header)
+                        # print(reader.pdf_header)
 
 
                         if PyPDF2.PdfReader(path).is_encrypted:
                             path = bracket_checker(path)
                             full_report_rows.append(['ENCRYPTED', '', '', version, '', file, '', '', '', '', '', '', path])
                             encrypted_report_rows.append(['ENCRYPTED', '', '', version, '', file, '', '', '', '', '', '', path])
+                            shutil.copy2(path, new_dir_path + '\\Encrypted_files') # Copies encrypted files to new destination
                             # print("IT'S PASSWORD PROTECTED")
                             continue
 
@@ -166,6 +172,7 @@ class MainPage(tk.Frame):
                                 path = bracket_checker(path)
                                 full_report_rows.append(['FORM FIELDS', '', '', version, '', file, '', '', '', '', '', '', path])
                                 encrypted_report_rows.append(['FORM FIELDS', '', '', version, '', file, '', '', '', '', '', '', path])
+                                shutil.copy2(path, new_dir_path + '\\Form_Fields_files') # Copies form fields files to new destination
                                 # print('GOT FORM FIELDS')
                                 continue
 
@@ -176,6 +183,7 @@ class MainPage(tk.Frame):
                             path = bracket_checker(path)
                             portfolio_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
                             full_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
+                            shutil.copy2(path, new_dir_path + '\\Portfolio_files') # Copies portfolio files to new destination
                         else:
                             path = bracket_checker(path)
                             full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
@@ -294,7 +302,7 @@ class SidePage(tk.Frame):
         self.text_box.delete(1.0, tk.END)  # Clears previous text
         # self.output_path = output_path +"\\"+ title  # Updates the output path
         self.output_path = output_path + "\\" + title
-        print("output path: ", output_path)
+        # print("output path: ", output_path)
 
         self.text_box.insert(tk.END, "Processing Complete!\n")  # Adds a completion message
         self.text_box.insert(tk.END, f"Source Path: {input_path}\n")
