@@ -12,6 +12,7 @@ from datetime import datetime
 import PyPDF2
 from pypdf import PdfReader
 from PIL import Image, ImageTk
+from itertools import islice
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -53,11 +54,21 @@ class MainPage(tk.Frame):
         
         self.controller = controller  # Store controller reference
 
-        self.path_1 = ''
-        self.path_2 = ''
+        with open('./Do Not Touch/cache.txt', "r") as f:
+
+            temp = f.readline().split('\n')[0] # Reads folder to scan
+            print("readline1: ", temp)
+            self.path_1 = temp
+
+            temp = f.readline().split('\n')[0] # Reads folder to place results
+            print("readline2: ", temp)
+            self.path_2 = temp
 
         path1 = tk.StringVar() # Receiving user's source file_path selection
         path2 = tk.StringVar() # Receiving user's destination file_path selection
+
+        path1.set(self.path_1)
+        path2.set(self.path_2)
 
         def bracket_checker(check_path):
             # Updates the input path to fix backwards slashes in directory string
@@ -74,16 +85,34 @@ class MainPage(tk.Frame):
 
         def selectPath1(): # Source path
             self.path_1 = filedialog.askdirectory()
+
+            # Reads the cache and saves the selected directory into the first line of the txt
+            with open('./Do Not Touch/cache.txt', "r") as f: 
+                lines = f.readlines()
+            lines[0] = self.path_1 + "\n"
+            with open('./Do Not Touch/cache.txt', "w") as f:
+                f.writelines(lines)
+
             path1.set(self.path_1)
 
         def selectPath2(): # Destination path
             self.path_2 = filedialog.askdirectory()
+
+            # Reads the cache and saves the selected directory into the second line of the txt
+            with open('./Do Not Touch/cache.txt', "r") as f:
+                lines = f.readlines()
+            lines[1] = self.path_2 + "\n"
+            with open('./Do Not Touch/cache.txt', "w") as f:
+                f.writelines(lines)
+
             path2.set(self.path_2)
 
         def next_step_start(input_files, output_path): # Makes sure that both source and destination folders are selected
 
-            if self.path_1 == '' or self.path_2 == '':
+            if self.path_1 == '' or self.path_2 == '': 
                 messagebox.showerror("Error", "Please Select Both Source and Destination Folders")
+            elif os.path.isdir(self.path_1) == False or os.path.isdir(self.path_2) == False: # Checks if the both directories exists/accessible
+                messagebox.showerror("Error", "Invalid Folder or Destination chosen")
             else:
                 fileProcessor(input_files, output_path)
                 
@@ -250,6 +279,7 @@ class SidePage(tk.Frame):
 
         output_path = temp
 
+        # Updates output path to fix backwards slashes in directory string
         temp = ""
         for char in input_path:
             if char == "/":
@@ -259,17 +289,17 @@ class SidePage(tk.Frame):
             temp = temp + char
 
         input_path = temp
-
+        
         self.text_box.config(state=tk.NORMAL)  # Enable editing
         self.text_box.delete(1.0, tk.END)  # Clears previous text
         # self.output_path = output_path +"\\"+ title  # Updates the output path
-        self.output_path = output_path + title
+        self.output_path = output_path + "\\" + title
         print("output path: ", output_path)
 
         self.text_box.insert(tk.END, "Processing Complete!\n")  # Adds a completion message
         self.text_box.insert(tk.END, f"Source Path: {input_path}\n")
         # print(input_path)
-        self.text_box.insert(tk.END, f"Output Path: {output_path}{title}\n")
+        self.text_box.insert(tk.END, f"Output Path: {output_path}\\{title}\n")
         # print(output_path)
         self.text_box.config(state=tk.DISABLED)  # Makes text read only
 
