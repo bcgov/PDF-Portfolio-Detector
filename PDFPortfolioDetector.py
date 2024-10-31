@@ -153,19 +153,30 @@ class MainPage(tk.Frame):
 
                     if file.lower().endswith(".pdf"):
                         
-                        test = current_path + '/' + file
-                        reader = PdfReader(test)
-                        version = reader.pdf_header[1:]
-                        # print(reader.pdf_header)
-
-
+                        
                         if PyPDF2.PdfReader(path).is_encrypted:
                             path = bracket_checker(path)
+
+                            try:
+                                test = current_path + '/' + file
+                                reader = PdfReader(test)
+                                version = reader.pdf_header[1:]
+                            except:
+                                print("Can't get version")
+
                             full_report_rows.append(['ENCRYPTED', '', '', version, '', file, '', '', '', '', '', '', path])
                             encrypted_report_rows.append(['ENCRYPTED', '', '', version, '', file, '', '', '', '', '', '', path])
                             shutil.copy2(path, new_dir_path + '\\Encrypted_files') # Copies encrypted files to new destination
                             # print("IT'S PASSWORD PROTECTED")
                             continue
+
+                        test = current_path + '/' + file
+                        reader = PdfReader(test)
+                        version = reader.pdf_header[1:]
+
+                        # reader = PdfReader(file)
+                        # fields = reader.get_fields()
+                        # print("Testtest: ", fields)
 
                         with open(path, 'rb') as cur:
                             if PyPDF2.PdfReader(path).get_fields():
