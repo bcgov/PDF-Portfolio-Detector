@@ -4,6 +4,8 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 import os
+import glob
+import pathlib
 import sys
 import csv
 from spire.pdf.common import *  #type: ignore
@@ -205,7 +207,21 @@ class MainPage(tk.Frame):
                         version = ''
                         full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
 
-            
+            # Prefix for encrypted files inside of the new folder created
+            for file in pathlib.Path(new_dir_path + '\\Encrypted_files').glob("*"):
+                dst = f"Ecrypted - {os.path.basename(file)}"
+                os.rename(file, os.path.join(os.path.dirname(file), dst))
+
+            # Prefix for PDF portfolio files inside of the new folder created
+            for file in pathlib.Path(new_dir_path + '\\Portfolio_files').glob("*"):
+                dst = f"Portfolio - {os.path.basename(file)}"
+                os.rename(file, os.path.join(os.path.dirname(file), dst))
+
+            # Prefix for form field files inside of the new folder created
+            for file in pathlib.Path(new_dir_path + '\\Form_Fields_files').glob("*"):
+                dst = f"FormFields - {os.path.basename(file)}"
+                os.rename(file, os.path.join(os.path.dirname(file), dst))
+                
             # Write reports
             with open(full_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
                 csv.writer(csvfile).writerows(full_report_rows)
