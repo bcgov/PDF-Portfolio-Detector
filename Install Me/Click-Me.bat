@@ -16,6 +16,7 @@ pip install Pillow==9.5.0
 pip install tk
 pip install pypdf
 pip install pycryptodome
+pip install pygame
 
 
 pause
