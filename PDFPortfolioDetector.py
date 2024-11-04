@@ -216,7 +216,7 @@ class MainPage(tk.Frame):
 
             # Prefix for encrypted files inside of the new folder created
             for file in pathlib.Path(new_dir_path + '\\Encrypted_files').glob("*"):
-                dst = f"Ecrypted - {os.path.basename(file)}"
+                dst = f"Encrypted - {os.path.basename(file)}"
                 os.rename(file, os.path.join(os.path.dirname(file), dst))
 
             # Prefix for PDF portfolio files inside of the new folder created
