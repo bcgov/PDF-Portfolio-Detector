@@ -22,7 +22,7 @@ class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)# for the class Tk
 
-        self.wm_title("PDF Portfolio Detector") # Adding a title to the window
+        self.wm_title("PDF Portfolio Detective") # Adding a title to the window
 
         self.geometry("650x400") # Default size when opened
 
@@ -255,7 +255,7 @@ class MainPage(tk.Frame):
         canvas.create_image( 0, 0, image = self.new_image, anchor="nw")
 
         # Page header
-        canvas.create_text(220, 80, text="PDF Portfolio Detector", fill="black", font=('Arial 25 bold'))
+        canvas.create_text(220, 80, text="PDF Portfolio Detective", fill="black", font=('Arial 25 bold'))
 
         # Source to scan
         canvas.create_text(85, 207, text="Folder to Scan: *", fill="black", font=('bold'))
