@@ -15,6 +15,7 @@ import PyPDF2
 from pypdf import PdfReader
 from PIL import Image, ImageTk
 from itertools import islice
+from pygame import mixer
 import shutil
 
 class windows(tk.Tk):
@@ -56,6 +57,12 @@ class MainPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         
         self.controller = controller  # Store controller reference
+
+        mixer.init()
+        mixer.music.load("pinkpanther.mp3")
+        mixer.music.play()
+        mixer.music.fadeout(7000)
+
 
         with open('./Do Not Touch/cache.txt', "r") as f:
 
@@ -240,7 +247,7 @@ class MainPage(tk.Frame):
         canvas = tk.Canvas(self, height=400, width=650)
         canvas.pack()
 
-        img = (Image.open("./Do Not Touch/abstract.png"))
+        img = (Image.open("./Do Not Touch/pinkpantherbg.png"))
 
         resized_image= img.resize((650,400), Image.ANTIALIAS)
         self.new_image= ImageTk.PhotoImage(resized_image)
@@ -273,7 +280,7 @@ class SidePage(tk.Frame):
         canvas = tk.Canvas(self, height=400, width=650)
         canvas.pack()
 
-        img = (Image.open("./Do Not Touch/abstract.png"))
+        img = (Image.open("./Do Not Touch/pinkpantherbg.png"))
 
         resized_image= img.resize((650,400), Image.ANTIALIAS)
         self.new_image= ImageTk.PhotoImage(resized_image)
