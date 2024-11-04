@@ -59,7 +59,7 @@ class MainPage(tk.Frame):
         self.controller = controller  # Store controller reference
 
         mixer.init()
-        mixer.music.load("pinkpanther.mp3")
+        mixer.music.load("Do Not Touch/pinkpanther.mp3")
         mixer.music.play()
         mixer.music.fadeout(7000)
 
