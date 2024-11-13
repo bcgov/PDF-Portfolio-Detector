@@ -8,8 +8,6 @@ import glob
 import pathlib
 import sys
 import csv
-from spire.pdf.common import *  #type: ignore
-from spire.pdf import *  #type: ignore
 from datetime import datetime
 import PyPDF2
 from pypdf import PdfReader
@@ -17,6 +15,8 @@ from PIL import Image, ImageTk
 from itertools import islice
 from pygame import mixer
 import shutil
+
+
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -140,7 +140,8 @@ class MainPage(tk.Frame):
             user = os.getlogin()
             title = f"{date_title} {user}" # Shows time then user idir
             new_dir_path = os.path.join(output_path, title)
-            print(new_dir_path)
+            new_dir_path = bracket_checker(new_dir_path)
+            # print(new_dir_path)
             os.mkdir(new_dir_path)
             os.mkdir(new_dir_path + '\\Encrypted_files') # Encrypted folder
             os.mkdir(new_dir_path + '\\Form_Fields_files') # Form Field folder
@@ -161,12 +162,13 @@ class MainPage(tk.Frame):
                     path = os.path.join(current_path, file)
 
                     if file.lower().endswith(".pdf"):
-                        
+
                         
                         if PyPDF2.PdfReader(path).is_encrypted:
                             path = bracket_checker(path)
 
-                            try:
+                            try:   
+                                # Gets pdf version
                                 test = current_path + '/' + file
                                 reader = PdfReader(test)
                                 version = reader.pdf_header[1:]
@@ -178,14 +180,11 @@ class MainPage(tk.Frame):
                             shutil.copy2(path, new_dir_path + '\\Encrypted_files') # Copies encrypted files to new destination
                             # print("IT'S PASSWORD PROTECTED")
                             continue
-
+                        
+                        # Gets pdf version
                         test = current_path + '/' + file
                         reader = PdfReader(test)
                         version = reader.pdf_header[1:]
-
-                        # reader = PdfReader(file)
-                        # fields = reader.get_fields()
-                        # print("Testtest: ", fields)
 
                         with open(path, 'rb') as cur:
                             if PyPDF2.PdfReader(path).get_fields():
@@ -196,23 +195,49 @@ class MainPage(tk.Frame):
                                 # print('GOT FORM FIELDS')
                                 continue
 
-                        doc = PdfDocument()
-                        doc.LoadFromFile(path)
 
-                        if doc.IsPortfolio:
-                            path = bracket_checker(path)
-                            portfolio_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
-                            full_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
-                            shutil.copy2(path, new_dir_path + '\\Portfolio_files') # Copies portfolio files to new destination
-                        else:
-                            path = bracket_checker(path)
-                            full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
+                        # Saves a copy of the pdf into temp folder
+                        shutil.copy2(path, new_dir_path) 
 
-                        doc.Close()
+                        # Converts copy of pdf to txt
+                        old_txt_path = new_dir_path + '\\' + file
+                        new_txt_path = new_dir_path + '\\' + file[:-3] + "txt"
+
+                        try: 
+                            os.rename(old_txt_path, new_txt_path)
+                        
+                        except FileExistsError: # If there are 2 files with the same name in the entire folder and sub-folders
+                            os.remove(new_txt_path)
+                            os.rename(old_txt_path, new_txt_path)
+
+                        # Scans to find PDF Portfolios
+                        with open(new_txt_path, 'r', errors="ignore") as f:
+                            
+                            file_content = f.read() # Read the content of the file
+                            
+                            # Portfolio (Keyword in metadata "/Collection")
+                            if "/Collection" in file_content:
+                                path = bracket_checker(path)
+
+                                portfolio_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
+                                full_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
+                                shutil.copy2(path, new_dir_path + '\\Portfolio_files') # Copies portfolio files to new destination
+
+                            # Not portfolio 
+                            else:
+                                path = bracket_checker(path)
+
+                                full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
+
+                    # Not a pdf
                     else:
                         path = bracket_checker(path)
                         version = ''
                         full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
+            
+            # Removes temp txt files
+            for file in pathlib.Path(new_dir_path).glob("*.txt"):
+                os.remove(file)
 
             # Prefix for encrypted files inside of the new folder created
             for file in pathlib.Path(new_dir_path + '\\Encrypted_files').glob("*"):
