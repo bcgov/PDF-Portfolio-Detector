@@ -131,10 +131,6 @@ class MainPage(tk.Frame):
             input_files = str(input_files)
             output_path = str(output_path)
 
-            # Debugging output
-            # print("Input Directory:", input_files)
-            # print("Output Directory:", output_path)
-
             # Create a timestamped directory for output
             date_title = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
             user = os.getlogin()
@@ -223,11 +219,17 @@ class MainPage(tk.Frame):
                                 full_report_rows.append(['PDF PORTFOLIO', '', '', version, '', file, '', '', '', '', '', '', path])
                                 shutil.copy2(path, new_dir_path + '\\Portfolio_files') # Copies portfolio files to new destination
 
+                                # TODO: Add function to scan attached files inside of the PDF Portfolio
+                                
+
+                                continue
+
                             # Not portfolio 
                             else:
                                 path = bracket_checker(path)
 
                                 full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
+                                continue
 
                     # Not a pdf
                     else:
