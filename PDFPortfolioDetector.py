@@ -20,7 +20,7 @@ import shutil
 
 class windows(tk.Tk):
     def __init__(self, *args, **kwargs):
-        tk.Tk.__init__(self, *args, **kwargs)# for the class Tk
+        tk.Tk.__init__(self, *args, **kwargs)# For the class Tk
 
         self.wm_title("PDF Portfolio Detective") # Adding a title to the window
 
@@ -37,7 +37,7 @@ class windows(tk.Tk):
         for F in (MainPage, SidePage): # Loops through each individual page layout provided by the classes
             frame = F(container, self) # Individual frame
 
-            self.frames[F] = frame# Putting in the individual frames (pages) into the "frames" array
+            self.frames[F] = frame # Putting in the individual frames (pages) into the "frames" array
 
             frame.grid(row=0, column=0, sticky='nsew')
 
@@ -67,11 +67,9 @@ class MainPage(tk.Frame):
         with open('./Do Not Touch/cache.txt', "r") as f:
 
             temp = f.readline().split('\n')[0] # Reads folder to scan
-            # print("readline1: ", temp)
             self.path_1 = temp
 
             temp = f.readline().split('\n')[0] # Reads folder to place results
-            # print("readline2: ", temp)
             self.path_2 = temp
 
         path1 = tk.StringVar() # Receiving user's source file_path selection
@@ -137,7 +135,7 @@ class MainPage(tk.Frame):
             title = f"{date_title} {user}" # Shows time then user idir
             new_dir_path = os.path.join(output_path, title)
             new_dir_path = bracket_checker(new_dir_path)
-            # print(new_dir_path)
+
             os.mkdir(new_dir_path)
             os.mkdir(new_dir_path + '\\Encrypted_files') # Encrypted folder
             os.mkdir(new_dir_path + '\\Form_Fields_files') # Form Field folder
@@ -164,7 +162,7 @@ class MainPage(tk.Frame):
                             path = bracket_checker(path)
 
                             try:   
-                                # Gets pdf version
+                                # Gets PDF version
                                 test = current_path + '/' + file
                                 reader = PdfReader(test)
                                 version = reader.pdf_header[1:]
@@ -174,10 +172,9 @@ class MainPage(tk.Frame):
                             full_report_rows.append(['ENCRYPTED', '', '', version, '', file, '', '', '', '', '', '', path])
                             encrypted_report_rows.append(['ENCRYPTED', '', '', version, '', file, '', '', '', '', '', '', path])
                             shutil.copy2(path, new_dir_path + '\\Encrypted_files') # Copies encrypted files to new destination
-                            # print("IT'S PASSWORD PROTECTED")
                             continue
                         
-                        # Gets pdf version
+                        # Gets PDF version
                         test = current_path + '/' + file
                         reader = PdfReader(test)
                         version = reader.pdf_header[1:]
@@ -188,14 +185,13 @@ class MainPage(tk.Frame):
                                 full_report_rows.append(['FORM FIELDS', '', '', version, '', file, '', '', '', '', '', '', path])
                                 encrypted_report_rows.append(['FORM FIELDS', '', '', version, '', file, '', '', '', '', '', '', path])
                                 shutil.copy2(path, new_dir_path + '\\Form_Fields_files') # Copies form fields files to new destination
-                                # print('GOT FORM FIELDS')
                                 continue
 
 
-                        # Saves a copy of the pdf into temp folder
+                        # Saves a copy of the PDF into temp folder
                         shutil.copy2(path, new_dir_path) 
 
-                        # Converts copy of pdf to txt
+                        # Converts copy of PDF to txt
                         old_txt_path = new_dir_path + '\\' + file
                         new_txt_path = new_dir_path + '\\' + file[:-3] + "txt"
 
@@ -231,7 +227,7 @@ class MainPage(tk.Frame):
                                 full_report_rows.append(['NONE', '', '', version, '', file, '', '', '', '', '', '', path])
                                 continue
 
-                    # Not a pdf
+                    # Not a PDF
                     else:
                         path = bracket_checker(path)
                         version = ''
@@ -256,7 +252,7 @@ class MainPage(tk.Frame):
                 dst = f"FormFields - {os.path.basename(file)}"
                 os.rename(file, os.path.join(os.path.dirname(file), dst))
                 
-            # Write reports
+            # Write full, portfolio and fill-in form/encrypted reports respectively
             with open(full_report_csv, 'w', newline='', encoding='utf-8') as csvfile:
                 csv.writer(csvfile).writerows(full_report_rows)
 
@@ -270,7 +266,7 @@ class MainPage(tk.Frame):
             controller.frames[SidePage].update_output_path(input_files, output_path, title) # Updates output path on SidePage
             controller.show_frame(SidePage)
 
-        #background image
+        # Background image
         canvas = tk.Canvas(self, height=400, width=650)
         canvas.pack()
 
@@ -361,15 +357,11 @@ class SidePage(tk.Frame):
         
         self.text_box.config(state=tk.NORMAL)  # Enable editing
         self.text_box.delete(1.0, tk.END)  # Clears previous text
-        # self.output_path = output_path +"\\"+ title  # Updates the output path
-        self.output_path = output_path + "\\" + title
-        # print("output path: ", output_path)
+        self.output_path = output_path + "\\" + title # Updates the output path
 
         self.text_box.insert(tk.END, "Processing Complete!\n")  # Adds a completion message
         self.text_box.insert(tk.END, f"Source Path: {input_path}\n")
-        # print(input_path)
         self.text_box.insert(tk.END, f"Output Path: {output_path}\\{title}\n")
-        # print(output_path)
         self.text_box.config(state=tk.DISABLED)  # Makes text read only
 
 
